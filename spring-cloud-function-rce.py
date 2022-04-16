@@ -66,7 +66,7 @@ def get_args():
     parser.add_argument("-s", "--system", dest="system",choices=["linux", "win"], type=str, help="指定目标主机操作系统,默认linux,参数为win/linux", default='linux')
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-i","--ipport", dest="ip", type=str, help="指定反弹shell地址和端口,example: -i='vps的ip:监听端口'")
-    group.add_argument("-c","--cs",dest="cs", type=str, help="指定cs powershell上线代码的地址,example: -c='http://vps/ps1'")
+    group.add_argument("-c","--cs",dest="cs", type=str, help="指定cs powershell上线代码的地址,example: -c='http://vps/ps1',此选项必须在windows下运行脚本,会调用本机powershell选项进行poc编码")
     args = parser.parse_args()
     url = args.url
     exp = args.exp
